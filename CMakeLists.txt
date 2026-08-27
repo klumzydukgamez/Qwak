@@ -11,6 +11,7 @@ set(CMAKE_C_EXTENSIONS        OFF)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(Qwak_VENDOR_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Vendor")
 set(Qwak_CORE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Core")
 set(Qwak_CORE_SOURCE_DIR "${Qwak_CORE_DIR}/Source")
 set(Qwak_CORE_INCLUDE_DIR "${Qwak_CORE_DIR}/Include")
@@ -18,6 +19,12 @@ set(Qwak_TOOLS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Tools")
 set(Qwak_TOOLS_SOURCE_DIR "${Qwak_TOOLS_DIR}/Source")
 set(Qwak_TESTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Tests")
 set(Qwak_TESTS_SOURCE_DIR "${Qwak_TESTS_DIR}/Source")
+
+set(SDL_SHARED OFF CACHE BOOL "" FORCE)
+set(SDL_STATIC ON  CACHE BOOL "" FORCE)
+add_subdirectory("${Qwak_VENDOR_DIR}/SDL")
+
+add_subdirectory("${Qwak_VENDOR_DIR}/glad")
 
 add_library(QwakCore STATIC)
 set_target_properties(
@@ -40,6 +47,10 @@ target_include_directories(
 target_include_directories(
 	QwakCore PUBLIC
 	${Qwak_CORE_INCLUDE_DIR}
+)
+target_link_libraries(
+	QwakCore PRIVATE
+	SDL3::SDL3
 )
 
 file(
